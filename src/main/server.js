@@ -1,18 +1,22 @@
 'use strict'
 
-process.title = 'Mikita Liaukovich diploma';
+process.title = 'Aperture server';
 
 const webSocketsServerPort = 1337;
 const webSocketServer = require('websocket').server;
 const http = require('http');
 const fs = require('fs');
+const path = require('path');
 const { getIPv4Address } = require('common/utils.js');
 
 let httpServer;
-const startServer = function (mainWindow) {
+
+function startServer(mainWindow) {
   httpServer = http.createServer(function (request, response) {
-    let url = (request.url === '/') ? '/static/client/client.index.html' : request.url;
-    fs.readFile('./dist' + url, function (err, data) {
+    const url = (request.url === '/') ? 'client/index.html' : request.url;
+    const finalPath = path.join(__static, url)
+    
+    fs.readFile(finalPath, (err, data) => {
       if (!err) {
         const dotOffset = request.url.lastIndexOf('.');
         const mimeType = dotOffset == -1
@@ -39,7 +43,7 @@ const startServer = function (mainWindow) {
 
   const hostAddress = getIPv4Address();
   httpServer.listen(webSocketsServerPort, hostAddress, function (err) {
-    console.log(`[${new Date()}] Server is listening on port ${webSocketsServerPort}`);
+    console.log(`[${new Date()}] Server is listening on ${hostAddress}:${webSocketsServerPort}`);
     mainWindow.webContents.send('store-data', {
       set: 'server',
       address: hostAddress,
@@ -51,14 +55,13 @@ const startServer = function (mainWindow) {
 
   wsServer.on('request', function (request) {
     let connection;
-    console.log(`[${new Date()}] Connection from origin ${request.origin}.`);
+    console.log(`[${new Date()}] Connection from origin ${request.origin} accepted.`);
     connection = request.accept(null, request.origin);
     mainWindow.webContents.send('store-data', {
       set: 'client',
       address: request.remoteAddress
     });
     let luxValue = null;
-    console.log(`[${new Date()}] Connection accepted.`);
 
     connection.on('message', function (message) {
       luxValue = message.utf8Data;

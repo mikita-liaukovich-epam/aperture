@@ -1,0 +1,34 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug Main",
+        "type": "node",
+        "request": "launch",
+        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron-webpack",
+        "runtimeArgs": [
+          "dev"
+        ],
+        "autoAttachChildProcesses": true,
+        "internalConsoleOptions": "openOnFirstSessionStart",
+        "console": "integratedTerminal"
+      },
+      {
+        "name": "Debug Renderer",
+        "type": "chrome",
+        "request": "attach",
+        "port": 9223,
+        "webRoot": "${workspaceFolder}/src/renderer",
+        "timeout": 30000
+      }
+  ],
+  "compounds": [
+      {
+          "name": "Electron: All",
+          "configurations": [
+              "Debug Main",
+              "Debug Renderer"
+          ]
+      }
+  ]
+}

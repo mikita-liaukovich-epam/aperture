@@ -1,5 +1,6 @@
 const sleep = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds))
 const $$ = el => document.querySelector(el);
+const getById = el => document.getElementById(el);
 const create = el => document.createElement(el);
 const remove = (parent, child) => (parent.removeChild(child), parent);
 const append = (parent, child) => (parent.appendChild(child), parent);
@@ -19,7 +20,6 @@ function getIPv4Address() {
         for (let i = 0; i < iface.length; i++) {
             const alias = iface[i];
             if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
-                console.log(`Address is ${alias.address}`);
                 return alias.address;
             }
         }
@@ -35,6 +35,7 @@ module.exports = {
     addAttr,
     addClass,
     create,
+    getById,
     getIPv4Address,
     remove,
     setId,

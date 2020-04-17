@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>LCD Optimization</title>
+    <title>Aperture</title>
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
@@ -13,24 +13,35 @@
             <td class="table-cell table-cell__server">
               <h4 class="table-cell__title">Сервер:</h4>
               <p class="table-cell__info">
-                <span class="server-ip"></span>:<span class="server-port"></span>
+                <span class="server-ip" id="server-ip"></span>:<span class="server-port" id="server-port"></span>
               </p>
             </td>
             <td class="table-cell table-cell__client">
               <h4 class="table-cell__title">Клиент:</h4>
               <p class="table-cell__info">
-                <span class="client-ip">Не подключен</span></span>
+                <span class="client-ip" id="client-ip">Не подключен</span></span>
               </p>
             </td>
             <td class="table-cell table-cell__values">
               <h4 class="table-cell__title">Показания датчика:</h4>
-              <p class="table-cell__info"><span class="lux-value">Не подключен</span></p>
+              <p class="table-cell__info"><span class="lux-value" id="lux-value">Не подключен</span></p>
             </td>
           </tr>
         </table>
       </div>
     </header>
     <main>
+      <div id="slider" class="slider">
+        <div class="wrapper">
+          <div class="slides" id="slides">
+            <span class="slide">red flower</span>
+            <span class="slide">purple sunset</span>
+            <span class="slide">yellow/white forest</span>
+          </div>
+        </div>
+        <a class="control next" id="next"></a>
+        <a class="control prev" id="prev"></a>
+      </div>
     </main>
     <footer>
       <div class="container">
@@ -38,6 +49,5 @@
         <span>BSUIR, 2020</span>
       </div>
     </footer>
-    <script src="main.js"></script>
   </body>
 </html>

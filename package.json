@@ -1,12 +1,17 @@
 {
-  "name": "mikita-liaukovich-diplome",
+  "name": "mikita-liaukovich-diploma__aperture",
+  "author": {
+    "name": "Mikita Liaukovich",
+    "email": "mikita.liaukovich@gmail.com"
+  },
+  "description": "Aperture - image optimization platform for ambient light",
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
     "start": "electron-webpack dev",
     "compile": "electron-webpack",
-    "build": "npm compile && electron-builder",
-    "build:dir": "npm dist --dir -c.compression=store -c.mac.identity=null"
+    "build": "npm run compile && electron-builder",
+    "build:dir": "npm run build --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
     "source-map-support": "^0.5.16"
