@@ -26,6 +26,12 @@
   "electronWebpack": {
     "commonSourceDirectory": "src/common",
     "staticSourceDirectory": "src/static",
-    "title": "Aperture"
+    "title": true,
+    "main": {
+      "sourceDirectory": "src/main"
+    },
+    "renderer": {
+      "sourceDirectory": "src/renderer"
+    }
   }
 }

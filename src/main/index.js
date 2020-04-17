@@ -1,5 +1,5 @@
 'use strict'
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 import * as path from 'path'
 import { startServer } from '@/server'
 
@@ -9,7 +9,7 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    show: false,
+    show: true,
     webPreferences: {
       nodeIntegration: true,
       preload: 'server.js',
@@ -23,8 +23,13 @@ function createWindow () {
   //mainWindow.setMenu(null)
 
   mainWindow.once('ready-to-show', () => {
+    mainWindow.webContents.send('ready');
     startServer(mainWindow);
     mainWindow.show()
+  })
+
+  ipcMain.once('shit', function (err, data) {
+    console.log(data);
   })
 
   // mainWindow.webContents.openDevTools()
