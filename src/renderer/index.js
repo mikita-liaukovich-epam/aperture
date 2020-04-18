@@ -4,6 +4,7 @@ import { addAttributes, create, getById } from "common/utils";
 import { readFileSync, readdirSync } from "fs";
 import * as path from "path";
 import { slide } from "./slider.js";
+import { initCorrection } from "./algorithm";
 import "../static/server/style.css";
 
 document.body.innerHTML = readFileSync(
@@ -17,7 +18,7 @@ let prev = getById("prev");
 let next = getById("next");
 
 let slideItems = document.createDocumentFragment();
-readdirSync(path.join(__static, "images/slides")).forEach((file) => {
+readdirSync(path.join(__static, "images/slides")).forEach(file => {
   const img = addAttributes(create("img"), {
     src: path.resolve(__static, `images/slides/${file}`),
     alt: file,
@@ -25,6 +26,18 @@ readdirSync(path.join(__static, "images/slides")).forEach((file) => {
     draggable: false,
   });
   slideItems.appendChild(img);
+});
+
+readdirSync(path.join(__static, "videos")).forEach(file => {
+  const video = addAttributes(create("video"), {
+    src: path.resolve(__static, `videos/${file}`),
+    alt: file,
+    class: "slide",
+    draggable: false,
+    preload: 'metadata',
+    loop: '',
+  });
+  slideItems.appendChild(video);
 });
 
 sliderItems.appendChild(slideItems);
@@ -43,9 +56,12 @@ ipcRenderer.on("store-data", function (event, store) {
     }
     case "lux": {
       updateLuxValue(store.value);
+      initCorrection(store.value);
     }
   }
 });
+
+setInterval(initCorrection, 1000)
 
 function setServerInfo(address, port) {
   getById("server-ip").innerHTML = address;

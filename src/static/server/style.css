@@ -79,11 +79,12 @@ footer .container {
     position: relative;
 }
   
-.wrapper {
+.slider-wrapper {
     overflow: hidden;
     position: relative;
     height: 100%;
     z-index: 1;
+    overflow: hidden;
 }
 
 .slides {
