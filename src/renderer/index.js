@@ -1,13 +1,13 @@
 'use strict';
 console.warn('SHIT');
-import { ipcRenderer } from 'electron';
-import { getById } from 'common/utils';
+// import { ipcRenderer } from 'electron';
+// import { getById } from 'common/utils';
 
-console.log('SOME');
 
-window.onload = start();
+window.onload = start;
 
 function start() {
+  console.log('SOME');
   ipcRenderer.on('store-data', function (event, store) {
       switch (store.set) {
           case 'server': {
