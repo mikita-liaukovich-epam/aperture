@@ -1,5 +1,5 @@
 'use strict';
-
+console.warn('SHIT');
 import { ipcRenderer } from 'electron';
 import { getById } from 'common/utils';
 
@@ -22,7 +22,6 @@ ipcRenderer.on('store-data', function (event, store) {
 });
 
 ipcRenderer.on('ready', init);
-ipcRenderer.send('shit', true);
 
 function setServerInfo(address, port) {
     document.getElementById('server-ip').innerHTML = address;
