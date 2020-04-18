@@ -1,41 +1,44 @@
 'use strict'
 import { app, BrowserWindow, ipcMain } from 'electron'
 import * as path from 'path'
-import { startServer } from '@/server'
+import { startServer, closeServer } from '@/server'
 
 let mainWindow;
+const isDevelopment = process.env.NODE_ENV !== 'production'
 
 function createWindow () {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    show: true,
+    show: false,
     webPreferences: {
       nodeIntegration: true,
-      preload: 'server.js',
-      // webSecurity: false,
-      //devTools: false,
+      webSecurity: false,
+      // devTools: false,
     },
     icon: path.join(__static, 'images/favicon.png'),
   })
-  
-  mainWindow.loadFile(path.join(__static, 'server/index.html'));
-  //mainWindow.setMenu(null)
+
+  if (isDevelopment) {
+    mainWindow.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`)
+    mainWindow.webContents.openDevTools()
+  } else {
+    mainWindow.loadURL(formatUrl({
+      pathname: path.join(__dirname, 'index.html'),
+      protocol: 'file',
+      slashes: true
+    }))
+  }
+  mainWindow.setMenu(null)
 
   mainWindow.once('ready-to-show', () => {
-    mainWindow.webContents.send('ready');
-    startServer(mainWindow);
+    startServer(mainWindow)
     mainWindow.show()
   })
 
-  ipcMain.once('shit', function (err, data) {
-    console.log(data);
-  })
-
-  // mainWindow.webContents.openDevTools()
-
   mainWindow.on('closed', function () {
     mainWindow = null
+    closeServer();
   })
 }
 

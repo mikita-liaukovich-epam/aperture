@@ -6,10 +6,11 @@ const remove = (parent, child) => (parent.removeChild(child), parent);
 const append = (parent, child) => (parent.appendChild(child), parent);
 const setId = (el, newId) => (el.id = newId, el);
 const addClass = (el, className) => (el.classList.add(className), el);
-const addAttr = (el, attrs) => {
+const addAttributes = (el, attrs) => {
     for (const name in attrs) {
-        el.setAttribute(name, attrs[name]);
+        el.setAttribute(name, attrs[name].toString());
     }
+    return el;
 };
 
 function getIPv4Address() {
@@ -32,7 +33,7 @@ function getIPv4Address() {
 module.exports = {
     $$,
     append,
-    addAttr,
+    addAttributes,
     addClass,
     create,
     getById,

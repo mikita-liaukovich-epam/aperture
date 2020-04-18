@@ -42,7 +42,7 @@ header {
 }
 
 .container {
-    min-width: 784px;
+    min-width: 765px;
     max-width: 1024px;
     width: 100%;
     height: 100%;
@@ -76,22 +76,22 @@ footer .container {
 .slider {
     width: 100%;
     height: 100%;
+    position: relative;
 }
   
 .wrapper {
     overflow: hidden;
     position: relative;
-    width: 400px;
-    height: 300px;
+    height: 100%;
     z-index: 1;
 }
 
 .slides {
     display: flex;
+    height: 100%;
     position: relative;
-    top: 0;
-    left: -400px;
-    width: 10000px;
+    width: 100%;
+    left: -100%;
 }
 
 .slides.shifting {
@@ -99,20 +99,19 @@ footer .container {
 }
 
 .slide {
-    width: 400px;
-    height: 300px;
-    cursor: pointer;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     transition: all 1s;
     position: relative;
-    background: #FFCF47;
     border-radius: 2px;
 }
 
 .control {
     position: absolute;
+    user-select: none;
+    
     top: 50%;
     width: 50px;
     height: 50px;
@@ -121,27 +120,29 @@ footer .container {
     margin-top: -20px;
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
     z-index: 2;
+    background-size: 22px;
+    background-position: center;
+    background-repeat: no-repeat;
   }
   
   .prev,
   .next {
-    background-size: 22px;
-    background-position: center;
-    background-repeat: no-repeat;
-    cursor: pointer;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAMAAADDpiTIAAABSlBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJCQcHBwZGRkNDQ0MDAwMGBgWFhYSEhISEhIREREREREPDw8PFhYVFRUUFBQUFBQTExMTExMSEhISEhIREREREREQEBAQEBATExMTExMRERERERERFBQQFBQQExMTExMSEhIRFBQRExMQExMSEhISEhISEhIRExMRExMRExMSEhISEhISEhIRExMRExMSEhISEhISEhISEhISEhISEhISEhISEhIQExMRExMRERESEhISEhISEhISEhISEhISExMSExMSExMQExMQExMRExMRExMSExMSExMQExMQExMRERESEhISExMSExMQERESEhISExMSExMQExMQExMQEREQEREQEREQERERERESEhISExMSExMQExMQEREQEREQEREQERESExMSExMSExMSExMSExMSExPzJz9CAAAAbXRSTlMAAQIDBAUGBwkKExQVFxscHR4hIiQlJicoKSorLC0uNDVISUpLTU5jZmdpbG1vdXZ3fH1/gIaIiYqLlpeYmpyhoqOkpaanqKmqq6ytrsPEx8jMztHT2d3h4uPk5ebn6Onq6+zx8vP19vn6+/3+yCxc6AAABPZJREFUeNrt3ddWk1EUhVGVqNhBFHvvYi/YKwoo2BVFwd4Qz/vfOryyRRPuzFlzPsJe3yB/gMC8eQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/PcWrOhb1e0MmRq7Ljz+XEr5Ojl+cLlzpFlybKr8MHO130mi7H5WfjUzuMhVYsw/V/70YKXDhOi6UZp56mUgxKXS3AsFRNhfigKC9X4sCkg2XIoCgq2ZLQpINliKApJNFAVEPwKWooBke4sCoh0uCoh2oihAAArwEtDKlAJyHwIVkP02UAFVm1BAtjNFAdHWziog23BRQPZj4EcFZDtQFJDtsgKydY0rINvCuRWwzsUUgAJQAApAASgABaAAFECHFzCmAAUoQAEKUEB7phWgABSAAlAACkABKIAKNBSgAAUoQAEKaLeA9S6mABSAAlAACkABKIAKCritAAUoQAEKUIACFNBWARtcTAEoAAWgABSAAqiigFsKUIACFKAABShAAQpQQGsvFaAAFIACUAAKoJYCRhWgAAUoQAEKUIACFKAABSigZQEbXUwBKAAFoACqKWBEAQpQgAIUoAAFKEABClCAAhSggH97pQAFoAAUgAKoRpcCFKAABShAAQpQgAIUoAAFKEABrQrY5GIKQAFUVcCwAhSgAAUoQAEKUIACFKAABShAAQpQgAIUoAAF/M1rBdRXwE0FKEABClCAAhSgAAUoQAEKUIACFKAABShAAQr4awGbXay6Am4oQAEKUIACFKAABShAAQpQgAIUoAAFKEABClCAAoIKGPKTIQW0b2qVi2UXcL/hYtkFHHOw7ALeL3Ow7AJOuVd2Ac/mu1d2AdudK7uAo66VXcCQY2UXcNetKi3gensBPHaq7C8BAgh/CbjjVtkPgdcdK/tt4BHXit6/bHOu6P19Kzh7/3LSvaL3f7fUwZL39wgYvv89vxIWvf9Uj4tVtv+cPhjwdouLRe+/1cXsj/2xP/bH/tgf+2N/7I/96ZD95/Tn4t/Y3/7YH/tjf+yP/bE/9sf+2J9O2X/Y/va3v/3b2t/nP+yP/bE/9sf+2B/7Y386bf8R+9vf/vZv69/C2t/+2B/7Y3/sj/2xPx2oYX/729/+9re//e3/7/03u5j9sT/2x/7YH/vTofuP2t/+9re//e1vf/vb3/72t3/T/Te5mP2xP/bH/nT4/rfsb3/729/+9re//e1vf/vbv5lX9rc/9sf+2B/708n737a//e1vf/vb3/72t7/97W9/+9v/j/03upj9sT/2p4L9x+xvf/vb3/72t7/97W9/+9vf/vb/3Uv72x/7U4mF9re//e1vf/vb3/72t7/97W9/+9vf/va3/4/9N7iY/alo/3H729/+9re//e1vf/vb3/72t7/97W9/+9vf/vb/btr+lWnYP9sV+0cbsH+01Z/sH23U/tH6v9o/2ln7Z5uwf7Re+2fbY/9sh+yf7Xib+693quQA7F+tAftn223/bCvtH+6J/bOdtn+2vln7Z7tm/2w9H+yfbZ/9w120f7auoab7P7d/igWDTfZ/2OMwOXY+/W3+L2cXu0qS7iMvfpp/5to6J0nT2HH+0efv60+OHVjuHKEPAyv6erqdAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAlr4B1C02Tr7q6bkAAAAASUVORK5CYII=');
   }
   
   .prev {
-    background-image: url(https://cdn0.iconfinder.com/data/icons/navigation-set-arrows-part-one/32/ChevronLeft-512.png);
-    left: -20px;
+    transform: scaleX(-1);
+    left: 0;
   }
   
   .next {
-    background-image: url(https://cdn0.iconfinder.com/data/icons/navigation-set-arrows-part-one/32/ChevronRight-512.png);
-    right: -20px;
+    right: 0;
   }
   
-  .prev:active,
+  .prev:active {
+    transform: scaleX(-1) scale(0.8);
+  }
+
   .next:active {
     transform: scale(0.8);
   }

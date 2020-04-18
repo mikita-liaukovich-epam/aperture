@@ -85,6 +85,14 @@ function startServer(mainWindow) {
   });
 }
 
+function closeServer() {
+  if (httpServer) {
+    httpServer.close();
+    console.log('Server was successfully closed')
+  }
+} 
+
 module.exports = {
   startServer,
+  closeServer,
 }
