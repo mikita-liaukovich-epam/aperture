@@ -61,7 +61,11 @@ ipcRenderer.on("store-data", function (event, store) {
   }
 });
 
-setInterval(initCorrection, 1000)
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Space') {
+    initCorrection()
+  }
+})
 
 function setServerInfo(address, port) {
   getById("server-ip").innerHTML = address;
