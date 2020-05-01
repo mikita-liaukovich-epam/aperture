@@ -89,6 +89,7 @@ function closeServer() {
   if (httpServer) {
     httpServer.close();
     console.log('Server was successfully closed')
+    process.exit(0);
   }
 } 
 

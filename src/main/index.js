@@ -1,7 +1,7 @@
 'use strict'
 import { app, BrowserWindow } from 'electron'
 import * as path from 'path'
-import * as url from 'url'
+import { format as formatUrl } from 'url'
 import { startServer, closeServer } from '@/server'
 
 let mainWindow;
@@ -24,12 +24,11 @@ function createWindow () {
     mainWindow.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`)
     mainWindow.webContents.openDevTools()
   } else {
-    const some = url.format({
+    mainWindow.loadURL(formatUrl({
       pathname: path.join(__dirname, 'index.html'),
       protocol: 'file',
       slashes: true
-    });
-    mainWindow.loadURL(some)
+    }));
   }
   mainWindow.setMenu(null)
 
