@@ -5,7 +5,7 @@
     "email": "mikita.liaukovich@gmail.com"
   },
   "description": "Aperture - image optimization platform for ambient light",
-  "version": "0.2.0",
+  "version": "0.5.0",
   "license": "MIT",
   "scripts": {
     "start": "electron-webpack dev",

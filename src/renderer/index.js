@@ -7,6 +7,8 @@ import { slide } from "./slider.js";
 import { initCorrection } from "./algorithm";
 import "../static/server/style.css";
 
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
 document.body.innerHTML = readFileSync(
   path.join(__static, "server/index.html"),
   "utf8"
@@ -20,7 +22,7 @@ let next = getById("next");
 let slideItems = document.createDocumentFragment();
 readdirSync(path.join(__static, "images/slides")).forEach(file => {
   const img = addAttributes(create("img"), {
-    src: path.resolve(__static, `images/slides/${file}`),
+    src: isDevelopment ? `images/slides/${file}` : path.resolve(__static, `images/slides/${file}`),
     alt: file,
     class: "slide",
     draggable: false,
@@ -30,12 +32,12 @@ readdirSync(path.join(__static, "images/slides")).forEach(file => {
 
 readdirSync(path.join(__static, "videos")).forEach(file => {
   const video = addAttributes(create("video"), {
-    src: path.resolve(__static, `videos/${file}`),
+    src: isDevelopment ? `videos/${file}` : path.resolve(__static, `videos/${file}`),
     alt: file,
     class: "slide",
     draggable: false,
-    preload: 'metadata',
-    loop: '',
+    preload: "metadata",
+    loop: "",
   });
   slideItems.appendChild(video);
 });

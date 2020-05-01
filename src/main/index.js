@@ -1,6 +1,7 @@
 'use strict'
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow } from 'electron'
 import * as path from 'path'
+import * as url from 'url'
 import { startServer, closeServer } from '@/server'
 
 let mainWindow;
@@ -16,18 +17,19 @@ function createWindow () {
       webSecurity: false,
       // devTools: false,
     },
-    icon: path.join(__static, 'images/favicon.png'),
+    icon: path.join(__static, 'images/favicon@256x256.png'),
   })
 
   if (isDevelopment) {
     mainWindow.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`)
     mainWindow.webContents.openDevTools()
   } else {
-    mainWindow.loadURL(formatUrl({
+    const some = url.format({
       pathname: path.join(__dirname, 'index.html'),
       protocol: 'file',
       slashes: true
-    }))
+    });
+    mainWindow.loadURL(some)
   }
   mainWindow.setMenu(null)
 
