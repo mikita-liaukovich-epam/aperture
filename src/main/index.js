@@ -15,7 +15,7 @@ function createWindow () {
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false,
-      // devTools: false,
+      devTools: isDevelopment,
     },
     icon: path.join(__static, 'images/favicon@256x256.png'),
   })
@@ -33,13 +33,14 @@ function createWindow () {
   mainWindow.setMenu(null)
 
   mainWindow.once('ready-to-show', () => {
-    startServer(mainWindow)
-    mainWindow.show()
+    startServer(mainWindow);
+    mainWindow.show();
   })
-
+  
   mainWindow.on('closed', function () {
     mainWindow = null
     closeServer();
+    process.exit(0);
   })
 }
 
