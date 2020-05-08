@@ -14,6 +14,8 @@
     "build:dir": "npm run build --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
+    "node-sass": "^4.14.1",
+    "sass-loader": "^8.0.2",
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {

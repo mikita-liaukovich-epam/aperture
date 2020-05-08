@@ -5,7 +5,7 @@ import { readFileSync, readdirSync } from "fs";
 import * as path from "path";
 import { slide } from "./slider.js";
 import { initCorrection } from "./algorithm";
-import "../static/server/style.css";
+import "../static/server/style.scss";
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 

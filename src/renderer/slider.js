@@ -7,7 +7,8 @@ function slide(wrapper, items, prev, next) {
   const cloneFirst = slides[0].cloneNode(true);
   const cloneLast = slides[slidesCount - 1].cloneNode(true);
   let index = 1;
-  
+
+  slides[0].classList.add('active');
   items.appendChild(cloneFirst);
   items.insertBefore(cloneLast, slides[0]);
   
@@ -28,6 +29,7 @@ function slide(wrapper, items, prev, next) {
   
   function shift(isNext) {
     items.classList.add('shifting');
+    slides[index].classList.remove('active');
     
     if (slides[index].tagName === 'VIDEO') {
       slides[index].pause();
@@ -51,6 +53,7 @@ function slide(wrapper, items, prev, next) {
       slides[index].play();
     }
 
+    slides[index].classList.add('active');
     items.style.left = `-${index * 100}%`;
   }
 }
