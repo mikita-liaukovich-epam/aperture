@@ -4,7 +4,7 @@ import { addAttributes, create, getById } from "common/utils";
 import { readFileSync, readdirSync } from "fs";
 import * as path from "path";
 import { slide } from "./slider.js";
-import { initCorrection } from "./algorithm";
+import { createWindow, initCorrection } from "./algorithm";
 import "../static/server/style.scss";
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -53,6 +53,7 @@ ipcRenderer.on("store-data", function (event, store) {
       break;
     }
     case "client": {
+      createWindow();
       setClientInfo(store.address);
       break;
     }
@@ -65,7 +66,7 @@ ipcRenderer.on("store-data", function (event, store) {
 
 document.addEventListener('keydown', (e) => {
   if (e.code === 'Space') {
-    initCorrection()
+    createWindow();
   }
 })
 

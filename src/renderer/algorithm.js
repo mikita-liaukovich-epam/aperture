@@ -3,6 +3,7 @@ const { getById } = require('common/utils');
 const remote = require('electron').remote;
 
 let sliderWrapper;
+let correctionWindow;
 
 const colorMap = {};
 let tones = [];
@@ -17,11 +18,21 @@ while (j < 256) {
 }
 if (tones.pop() !== 255) tones.push(255);
 
-function initCorrection(lux) {
+function createWindow() {
+    const BrowserWindow = remote.BrowserWindow;
+
+    correctionWindow = new BrowserWindow({
+        height: 540,
+        width: 800
+    });
+    correctionWindow.setMenu(null);
+}
+
+function initCorrection(lux = 0) {
     if (!sliderWrapper) {
         sliderWrapper = getById('sliderWrapper');
     }
-    lux = Math.floor(Math.random() * 3000);
+    // lux = Math.floor(Math.random() * 3000);
 
     const currentSlide = document.querySelector('.slide.active');
     const canvas = document.createElement('canvas');
@@ -34,7 +45,6 @@ function initCorrection(lux) {
 
     if (false) {
         promise = new Promise((resolve, reject) => {
-
         })
     } else {
         promise = new Promise(function(resolve, reject) {
@@ -46,7 +56,7 @@ function initCorrection(lux) {
                 const averageColor = Math.floor((r + g + b) / 3);
                 const swap = tones.find(tone => tone >= averageColor);
 
-                let diff = swap - averageColor + 20;
+                let diff = swap - averageColor + Math.log(lux);
                 if (swap + 20 <= 235) {
                     data.data[x] += diff;
                     data.data[x + 1] += diff;
@@ -62,14 +72,7 @@ function initCorrection(lux) {
     promise.then((data) => {
         context.putImageData(data, 0, 0);
 
-        const BrowserWindow = remote.BrowserWindow;
-        const win = new BrowserWindow({
-            height: 540,
-            width: 800
-        });
-        win.setMenu(null);
-
-        win.loadURL(canvas.toDataURL());
+        correctionWindow.loadURL(canvas.toDataURL());
         console.log(lux);
     })
 }
@@ -109,12 +112,12 @@ function deltaE(labA, labB) {
     let deltaH = deltaA * deltaA + deltaB * deltaB - deltaC * deltaC;
     deltaH = deltaH < 0 ? 0 : Math.sqrt(deltaH);
 
-    const sc = 1 + 0.045 * c1;
-    const sh = 1 + 0.015 * c1;
+    // const sc = 1 + 0.045 * c1;
+    // const sh = 1 + 0.015 * c1;
 
     // const deltaLKlsl = deltaL / 1.0;
-    const deltaCkcsc = deltaC / sc;
-    const deltaHkhsh = deltaH / sh;
+    // const deltaCkcsc = deltaC / sc;
+    // const deltaHkhsh = deltaH / sh;
 
     const i = Math.pow(deltaL, 2); //+ Math.pow(deltaCkcsc, 2) + Math.pow(deltaHkhsh, 2);
     return i < 0 ? 0 : Math.sqrt(i);
@@ -122,5 +125,6 @@ function deltaE(labA, labB) {
 
 
 module.exports = {
+    createWindow,
     initCorrection
 }
