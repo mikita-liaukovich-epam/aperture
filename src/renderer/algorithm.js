@@ -56,7 +56,7 @@ function initCorrection(lux = 0) {
                 const averageColor = Math.floor((r + g + b) / 3);
                 const swap = tones.find(tone => tone >= averageColor);
 
-                let diff = swap - averageColor + Math.log(lux);
+                let diff = swap - averageColor + Math.log(Math.pow(lux, 3));
                 if (swap + 20 <= 235) {
                     data.data[x] += diff;
                     data.data[x + 1] += diff;
@@ -126,5 +126,6 @@ function deltaE(labA, labB) {
 
 module.exports = {
     createWindow,
-    initCorrection
+    initCorrection,
+    correctionWindow
 }

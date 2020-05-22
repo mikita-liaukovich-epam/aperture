@@ -4,7 +4,7 @@ import { addAttributes, create, getById } from "common/utils";
 import { readFileSync, readdirSync } from "fs";
 import * as path from "path";
 import { slide } from "./slider.js";
-import { createWindow, initCorrection } from "./algorithm";
+import { createWindow, initCorrection, correctionWindow } from "./algorithm";
 import "../static/server/style.scss";
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -53,7 +53,7 @@ ipcRenderer.on("store-data", function (event, store) {
       break;
     }
     case "client": {
-      createWindow();
+      if (!correctionWindow) createWindow();
       setClientInfo(store.address);
       break;
     }
