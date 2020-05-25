@@ -48,6 +48,7 @@ class Algorithm {
         }
     }
 
+<<<<<<< HEAD
     async initCorrection() {
         this.createWindow();
         log('initCorrection', this.correctionLineUp);
@@ -83,6 +84,9 @@ class Algorithm {
                 const swap = this.tones.find(tone => tone >= averageColor);
         
                 let diff = swap - averageColor + Math.log(this.lux);
+=======
+                let diff = swap - averageColor + Math.log(Math.pow(lux, 3));
+>>>>>>> f06f02ba225a048552581254ee8e8e5ceed0d2aa
                 if (swap + 20 <= 235) {
                     this.data.data[x] += diff;
                     this.data.data[x + 1] += diff;
@@ -139,5 +143,11 @@ class Algorithm {
 }
 
 module.exports = {
+<<<<<<< HEAD
     Algorithm
+=======
+    createWindow,
+    initCorrection,
+    correctionWindow
+>>>>>>> f06f02ba225a048552581254ee8e8e5ceed0d2aa
 }
