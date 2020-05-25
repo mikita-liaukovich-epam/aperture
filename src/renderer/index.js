@@ -4,7 +4,7 @@ import { addAttributes, create, getById } from "common/utils";
 import { readFileSync, readdirSync } from "fs";
 import * as path from "path";
 import { slide } from "./slider.js";
-import { createWindow, initCorrection } from "./algorithm";
+import { Algorithm } from "./algorithm";
 import "../static/server/style.scss";
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -18,6 +18,7 @@ let slider = getById("slider");
 let sliderItems = getById("slides");
 let prev = getById("prev");
 let next = getById("next");
+const algorithm = new Algorithm();
 
 let slideItems = document.createDocumentFragment();
 readdirSync(path.join(__static, "images/slides")).forEach(file => {
@@ -53,20 +54,21 @@ ipcRenderer.on("store-data", function (event, store) {
       break;
     }
     case "client": {
-      createWindow();
       setClientInfo(store.address);
       break;
     }
     case "lux": {
       updateLuxValue(store.value);
-      initCorrection(store.value);
+      algorithm.updateLuxValue(store.value);
     }
   }
 });
 
 document.addEventListener('keydown', (e) => {
   if (e.code === 'Space') {
-    createWindow();
+    const lux = Math.floor(Math.random() * 3000);
+    console.log(lux);
+    algorithm.updateLuxValue(lux);
   }
 })
 

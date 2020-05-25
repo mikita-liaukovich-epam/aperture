@@ -16,6 +16,7 @@ function createWindow () {
       nodeIntegration: true,
       webSecurity: false,
       devTools: isDevelopment,
+      nativeWindowOpen: true
     },
     icon: path.join(__static, 'images/favicon@256x256.png'),
   })
@@ -41,6 +42,22 @@ function createWindow () {
     mainWindow = null
     closeServer();
     process.exit(0);
+  })
+
+  mainWindow.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
+    if (frameName === 'Correction result') {
+      event.preventDefault()
+
+      Object.assign(options, {
+        modal: true,
+        parent: mainWindow,
+        height: 540,
+        width: 800,
+      })
+
+      event.newGuest = new BrowserWindow(options);
+      event.newGuest.setMenu(null);
+    }
   })
 }
 
