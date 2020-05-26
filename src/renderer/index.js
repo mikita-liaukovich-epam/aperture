@@ -18,6 +18,7 @@ let slider = getById("slider");
 let sliderItems = getById("slides");
 let prev = getById("prev");
 let next = getById("next");
+debugger;
 const algorithm = new Algorithm();
 
 let slideItems = document.createDocumentFragment();

@@ -53,10 +53,12 @@ function createWindow () {
         parent: mainWindow,
         height: 540,
         width: 800,
+        title: frameName
       })
 
       event.newGuest = new BrowserWindow(options);
       event.newGuest.setMenu(null);
+      event.newGuest.webContents.openDevTools();
     }
   })
 }

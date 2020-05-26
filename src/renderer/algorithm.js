@@ -3,18 +3,15 @@
 let i = 0;
 let j = 1;
 
-function log(functionName, value) {
-    console.log(functionName, value)
-}
-
 class Algorithm {
     constructor() {
         this.colorMap = {};
         this.tones = [];
         
         this.correctionWindow;
-        this.correctionLineUp = null;
         this.lux = 0;
+        this.canvasWidth = 960;
+        this.canvasHeight = 540;
 
         while (j < 256) {
             if (this.deltaE(this.rgb2lab([i, i, i]), this.rgb2lab([j, j, j])) >= 1.5) {
@@ -22,83 +19,69 @@ class Algorithm {
                 i = j++;
             } else j++
         }
+
         if (this.tones.pop() !== 255) this.tones.push(255);
+        
+        for (let color = 0; color < 256; color++) {
+            this.colorMap[color] = this.tones.find(tone => tone >= color)
+        }
+        console.log(this.colorMap);
     }
 
     createWindow() {
-        log('createWindow', this.correctionWindow);
-        
         this.correctionWindow = window.open('', 'Correction result');
-        this.correctionWindow.document.write('<canvas id="correctionCanvas"></canvas>');
-
-        this.correctionWindow.on('closed', () => {
-            console.warn(this.correctionWindow, true);
-            this.correctionWindow = null
-            console.warn(this.correctionWindow, false);
-        })
-    }    
+        this.correctionWindow.document.write(`
+            <body style="background: #333; display: flex; align-items: center; margin: 0;"></body>
+            <canvas style="height: 100%; width: 100%" id="correctionCanvas"></canvas>
+        `);
+    }
 
     updateLuxValue(newLux = 0) {
-        this.lux = newLux;
-        log('updateLuxValue', this.lux);
+        this.lux = Math.log(Math.pow(newLux, 3));
 
-        if (!this.correctionLineUp) {
-            this.correctionLineUp = true;
+        if (!this.correctionWindow || this.correctionWindow.closed) {
             this.initCorrection.call(this);
         }
     }
 
-<<<<<<< HEAD
     async initCorrection() {
         this.createWindow();
-        log('initCorrection', this.correctionLineUp);
         this.currentSlide = document.querySelector('.slide.active');
         this.canvas = this.correctionWindow.document.getElementById('correctionCanvas');
         this.context = this.canvas.getContext('2d');
         
-        this.canvas.width = 960;
-        this.canvas.height = 540;
+        this.canvas.width = this.canvasWidth;
+        this.canvas.height = this.canvasHeight;
         
-        this.context.drawImage(this.currentSlide, 0, 0, 960, 540);
+        this.context.drawImage(this.currentSlide, 0, 0, this.canvasWidth, this.canvasHeight);
         
         if (false) {
 
         } else {
-            log('initCorrection', 'set correctionLineUp')
-            this.correctionLineUp = setInterval(this.toneCorrection.bind(this), 1000);
+            this.correctionWindow.requestAnimationFrame(this.toneCompression.bind(this));
         }
     }
 
-    toneCorrection() {
-        log('toneCorrection', this.lux);
-        if (this.correctionWindow) {
-            this.context.drawImage(this.currentSlide, 0, 0, 960, 540);
-            this.data = this.context.getImageData(0, 0, 1920, 1080);
-    
-            for (var x = 0, len = this.data.data.length; x < len; x += 4) {
-                const r = this.data.data[x];
-                const g = this.data.data[x + 1];
-                const b = this.data.data[x + 2];
-    
-                const averageColor = Math.floor((r + g + b) / 3);
-                const swap = this.tones.find(tone => tone >= averageColor);
-        
-                let diff = swap - averageColor + Math.log(this.lux);
-=======
-                let diff = swap - averageColor + Math.log(Math.pow(lux, 3));
->>>>>>> f06f02ba225a048552581254ee8e8e5ceed0d2aa
-                if (swap + 20 <= 235) {
-                    this.data.data[x] += diff;
-                    this.data.data[x + 1] += diff;
-                    this.data.data[x + 2] += diff;
-                }
-    
-                // colorMap[averageColor] = colorMap[averageColor] + 1 || 1;
+    async toneCompression() {
+        if (!this.correctionWindow.closed) {
+            this.context.drawImage(this.currentSlide, 0, 0, this.canvasWidth, this.canvasHeight);
+            this.slideData = this.context.getImageData(0, 0, this.canvasWidth, this.canvasHeight);
+            const data = this.slideData.data;
+            
+            for (let x = 0; x < data.length; x += 4) {                
+                const averageColor = ~~((data[x] + data[x + 1] + data[x + 2]) / 3);
+                const diff = this.colorMap[averageColor] - averageColor + this.lux;
+
+                data[x] += diff;
+                data[x + 1] += diff;
+                data[x + 2] += diff;                    
             }
-            this.context.putImageData(this.data, 0, 0);
+            
+            this.context.putImageData(this.slideData, 0, 0);
+
+            this.correctionWindow.requestAnimationFrame(this.toneCompression.bind(this));
         } else {
-            clearInterval(this.correctionLineUp);
-            this.correctionLineUp = null;
+            this.correctionWindow = null;
         }
     }
 
@@ -142,12 +125,6 @@ class Algorithm {
     }
 }
 
-module.exports = {
-<<<<<<< HEAD
+export {
     Algorithm
-=======
-    createWindow,
-    initCorrection,
-    correctionWindow
->>>>>>> f06f02ba225a048552581254ee8e8e5ceed0d2aa
 }
