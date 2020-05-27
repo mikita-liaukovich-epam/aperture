@@ -5,20 +5,40 @@ const messageEl = document.querySelector('.message');
 
 connectionStatus.innerHTML = `Подключение к ${host} (&#8635;)`;
 
-const connection = new WebSocket(`ws://${host}`);
+const connection = new WebSocket(`wss://${host}`);
 
-
-window.addEventListener('devicelight', (event, error) => {
-  if (!error) {
-    messageEl.innerHTML = '';
-    luxLevel.innerHTML = event.value;
+if (window.AmbientLightSensor) {
+  const sensor = new AmbientLightSensor();
+  
+  sensor.onreading = () => {
+    messageEl.innerHTML = 'lux';
+    console.log('Current light level:', sensor.illuminance);
+    
+    luxLevel.innerHTML = sensor.illuminance;
+    
     if (connection) {
-      connection.send(event.value);  
+      connection.send(sensor.illuminance);  
     }
-  } else {
-    console.error(error);
-  }
-})
+  };
+
+  sensor.onerror = (event) => {
+    console.log(event.error.name, event.error.message);
+  };
+
+  sensor.start();
+} else {
+  window.addEventListener('devicelight', (event, error) => {
+    if (!error) {
+      messageEl.innerHTML = 'lux';
+      luxLevel.innerHTML = event.value;
+      if (connection) {
+        connection.send(event.value);  
+      }
+    } else {
+      console.error(error);
+    }
+  })
+}
 
 connection.onopen = () => {
   connectionStatus.innerHTML = `Подключен к ${host} (&#10004;)`;
