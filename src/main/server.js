@@ -51,7 +51,7 @@ function startServer(mainWindow) {
     console.log(`[${new Date()}] Server is listening on ${hostAddress}:${webSocketsServerPort}`);
     mainWindow.webContents.send('store-data', {
       set: 'server',
-      address: hostAddress,
+      address: 'https://' + hostAddress,
       port: webSocketsServerPort,
     })
   });

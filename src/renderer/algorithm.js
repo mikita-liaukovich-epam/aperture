@@ -25,7 +25,6 @@ class Algorithm {
         for (let color = 0; color < 256; color++) {
             this.colorMap[color] = this.tones.find(tone => tone >= color)
         }
-        console.log(this.colorMap);
     }
 
     createWindow() {

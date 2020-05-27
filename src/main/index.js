@@ -52,7 +52,7 @@ function createWindow () {
         modal: true,
         parent: mainWindow,
         height: 540,
-        width: 800,
+        width: 900,
         title: frameName
       })
 
