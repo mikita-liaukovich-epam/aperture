@@ -12,7 +12,6 @@ if (window.AmbientLightSensor) {
   
   sensor.onreading = () => {
     messageEl.innerHTML = 'lux';
-    console.log('Current light level:', sensor.illuminance);
     
     luxLevel.innerHTML = sensor.illuminance;
     
@@ -22,7 +21,7 @@ if (window.AmbientLightSensor) {
   };
 
   sensor.onerror = (event) => {
-    console.log(event.error.name, event.error.message);
+    console.error(event.error.name, event.error.message);
   };
 
   sensor.start();

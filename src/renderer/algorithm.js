@@ -35,8 +35,8 @@ class Algorithm {
         `);
     }
 
-    updateLuxValue(newLux = 0) {
-        this.lux = Math.log(Math.pow(newLux, 3));
+    updateLuxValue(newLux) {
+        this.lux = Math.log(Math.pow(newLux || 1, 3));
 
         if (!this.correctionWindow || this.correctionWindow.closed) {
             this.initCorrection.call(this);
@@ -84,27 +84,31 @@ class Algorithm {
         }
     }
 
+    formatRGB(c) {
+        return (c > 0.04045) ? Math.pow((c + 0.055) / 1.055, 2.4) : c / 12.92;
+    } 
+
+    formatXYZ(c) {
+        return (c > 0.008856) ? Math.pow(c, 1 / 3) : (7.787 * c) + 16 / 116;
+    } 
+
+    rgb2xyz([r, g, b]) {
+        r = this.formatRGB(r / 255);
+        g = this.formatRGB(g / 255);
+        b = this.formatRGB(b / 255);
+    
+        return [
+            this.formatXYZ((r * 0.4124 + g * 0.3576 + b * 0.1805) / 0.95047),
+            this.formatXYZ((r * 0.2126 + g * 0.7152 + b * 0.0722) / 1.00000),
+            this.formatXYZ((r * 0.0193 + g * 0.1192 + b * 0.9505) / 1.08883)
+        ]
+    }
+
     rgb2lab(rgb) {
-        let r = rgb[0] / 255,
-            g = rgb[1] / 255,
-            b = rgb[2] / 255,
-            x, y, z;
+        return this.xyz2lab(this.rgb2xyz(rgb));
+    }
     
-        const formatRGB = c => (c > 0.04045) ? Math.pow((c + 0.055) / 1.055, 2.4) : c / 12.92;
-        const formatXYZ = c => (c > 0.008856) ? Math.pow(c, 1 / 3) : (7.787 * c) + 16 / 116;
-    
-        r = formatRGB(r);
-        g = formatRGB(g);
-        b = formatRGB(b);
-    
-        x = (r * 0.4124 + g * 0.3576 + b * 0.1805) / 0.95047;
-        y = (r * 0.2126 + g * 0.7152 + b * 0.0722) / 1.00000;
-        z = (r * 0.0193 + g * 0.1192 + b * 0.9505) / 1.08883;
-    
-        x = formatXYZ(x);
-        y = formatXYZ(y);
-        z = formatXYZ(z);
-    
+    xyz2lab([x, y, z]) {
         return [(116 * y) - 16, 500 * (x - y), 200 * (y - z)]
     }
 

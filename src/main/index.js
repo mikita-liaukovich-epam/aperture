@@ -58,7 +58,7 @@ function createWindow () {
 
       event.newGuest = new BrowserWindow(options);
       event.newGuest.setMenu(null);
-      event.newGuest.webContents.openDevTools();
+      // event.newGuest.webContents.openDevTools();
     }
   })
 }

@@ -60,14 +60,14 @@ ipcRenderer.on("store-data", function (event, store) {
     }
     case "lux": {
       updateLuxValue(store.value);
-      algorithm.updateLuxValue(store.value);
+      algorithm.updateLuxValue(parseInt(store.value));
     }
   }
 });
 
 document.addEventListener('keydown', (e) => {
   if (e.code === 'Space') {
-    const lux = Math.floor(Math.random() * 3000);
+    const lux = Math.floor(Math.random() * 5000);
     console.log(lux);
     algorithm.updateLuxValue(lux);
   }
