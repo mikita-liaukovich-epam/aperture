@@ -73,6 +73,13 @@ document.addEventListener('keydown', (e) => {
   }
 })
 
+const checkbox = document.getElementById('typeCheck');
+checkbox.addEventListener('click', () => {
+  if (checkbox.checked) {
+    algorithm.setIsDLType = true;
+  } else algorithm.setIsDLType = false;
+})
+
 function setServerInfo(address, port) {
   getById("server-ip").innerHTML = address;
   getById("server-port").innerHTML = port;

@@ -31,7 +31,7 @@ function createWindow () {
       slashes: true
     }));
   }
-  mainWindow.setMenu(null)
+  mainWindow.setMenu(null);
 
   mainWindow.once('ready-to-show', () => {
     startServer(mainWindow);
@@ -51,8 +51,8 @@ function createWindow () {
       Object.assign(options, {
         modal: true,
         parent: mainWindow,
-        height: 540,
-        width: 900,
+        height: 480,
+        width: 800,
         title: frameName
       })
 
