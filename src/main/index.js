@@ -30,8 +30,8 @@ function createWindow () {
       protocol: 'file',
       slashes: true
     }));
+    mainWindow.setMenu(null);
   }
-  mainWindow.setMenu(null);
 
   mainWindow.once('ready-to-show', () => {
     startServer(mainWindow);
@@ -58,7 +58,7 @@ function createWindow () {
 
       event.newGuest = new BrowserWindow(options);
       event.newGuest.setMenu(null);
-      // event.newGuest.webContents.openDevTools();
+      event.newGuest.webContents.openDevTools();
     }
   })
 }

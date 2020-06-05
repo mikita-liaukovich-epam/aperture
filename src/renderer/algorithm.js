@@ -27,27 +27,37 @@ class Algorithm {
         for (let color = 0; color < 256; color++) {
             this.EColorMap[color] = this.tones.find(tone => tone >= color)
         }
+        console.log(this.tones);
 
-        i = 0;
+        i = 1;
         j = 1;
         this.tones = [];
         
         while (j < 256) {
-            const Lj = this.rgb2lab([j, j, j])[0];
-            const Li = this.rgb2lab([i, i, i])[0];
-            const Lip1 = this.rgb2lab([i + 1, i + 1, i + 1])[0];
+            const Li = this.getL(this.rgb2lab([i, i, i])) * 0.65;
+            const Lj = this.getL(this.rgb2lab([j, j, j])) * 0.65;
+            const a = (Lj - Li);
+            const b = (Lj + Li) / 2;
+            const c = a / b;
+
+            const Li0 = this.getL(this.rgb2lab([i, i, i]));
+            const Lip1 = this.getL(this.rgb2lab([i + 1, i + 1, i + 1]));
+            const a1 = (Lip1 - Li0);
+            const b1 = (Lip1 + Li0) / 2;
+            const c1 = a1 / b1;
             
-            if (200 * (Lj - Li) >= 255 * (Lip1 - Li)) {
+            if ( c > c1 ) {
                 this.tones.push(j);
                 i = j++;
             } else j++
         }
-        
+
         if (this.tones[this.tones.length - 1] !== 255) this.tones.push(255);
 
         for (let color = 0; color < 256; color++) {
             this.LColorMap[color] = this.tones.find(tone => tone >= color)
         }
+        console.log(this.tones);
     }
 
     createWindow() {
@@ -90,10 +100,10 @@ class Algorithm {
             this.colorMap = this.EColorMap;
         }
 
-        this.correctionWindow.requestAnimationFrame(this.toneCompressionE.bind(this));
+        this.correctionWindow.requestAnimationFrame(this.toneCompression.bind(this));
     }
 
-    async toneCompressionE() {
+    async toneCompression() {
         if (!this.correctionWindow.closed) {
             this.context.drawImage(this.currentSlide, 0, 0, this.canvasWidth, this.canvasHeight);
             this.slideData = this.context.getImageData(0, 0, this.canvasWidth, this.canvasHeight);
@@ -110,7 +120,7 @@ class Algorithm {
             
             this.context.putImageData(this.slideData, 0, 0);
 
-            this.correctionWindow.requestAnimationFrame(this.toneCompressionE.bind(this));
+            this.correctionWindow.requestAnimationFrame(this.toneCompression.bind(this));
         } else {
             this.correctionWindow = null;
         }
@@ -147,19 +157,20 @@ class Algorithm {
         return [(116 * y) - 16, 500 * (x - y), 200 * (y - z)]
     }
 
+    getL(lab) {
+        const fraction = lab[0] / 100;
+
+        return (fraction > Math.pow(6/29, 3)) 
+            ? 116 * Math.pow(fraction, 1/3) 
+            : Math.pow(29/3, 3) * fraction;
+    }
+
+    deltaL(labA, labB) {
+        return this.getL(labA) - this.getL(labB);
+    }
+
     deltaE(labA, labB) {
-        const deltaL = labA[0] - labB[0];
-        const deltaA = labA[1] - labB[1];
-        const deltaB = labA[2] - labB[2];
-        const c1 = Math.sqrt(Math.pow(labA[1], 2) + Math.pow(labA[2], 2));
-        const c2 = Math.sqrt(Math.pow(labB[1], 2) + Math.pow(labB[2], 2));
-        const deltaC = c1 - c2;
-    
-        let deltaH = deltaA * deltaA + deltaB * deltaB - deltaC * deltaC;
-        deltaH = deltaH < 0 ? 0 : Math.sqrt(deltaH);
-    
-        const i = Math.pow(deltaL, 2);
-        return i < 0 ? 0 : Math.sqrt(i);
+        return Math.abs(this.deltaL(labA, labB), 2);
     }
 }
 

@@ -67,7 +67,8 @@ ipcRenderer.on("store-data", function (event, store) {
 
 document.addEventListener('keydown', (e) => {
   if (e.code === 'Space') {
-    const lux = Math.floor(Math.random() * 5000);
+    //const lux = Math.floor(Math.random() * 5000);
+    const lux = 5000;
     console.log(lux);
     algorithm.updateLuxValue(lux);
   }
