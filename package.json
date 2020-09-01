@@ -5,7 +5,7 @@
     "email": "mikita.liaukovich@gmail.com"
   },
   "description": "Aperture - image optimization platform for ambient light",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "start": "electron-webpack dev",
@@ -14,6 +14,8 @@
     "build:dir": "npm run build --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
+    "node-sass": "^4.14.1",
+    "sass-loader": "^8.0.2",
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
@@ -26,6 +28,12 @@
   "electronWebpack": {
     "commonSourceDirectory": "src/common",
     "staticSourceDirectory": "src/static",
-    "title": "Aperture"
+    "title": true,
+    "main": {
+      "sourceDirectory": "src/main"
+    },
+    "renderer": {
+      "sourceDirectory": "src/renderer"
+    }
   }
 }

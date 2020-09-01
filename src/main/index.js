@@ -1,9 +1,11 @@
 'use strict'
 import { app, BrowserWindow } from 'electron'
 import * as path from 'path'
-import { startServer } from '@/server'
+import { format as formatUrl } from 'url'
+import { startServer, closeServer } from '@/server'
 
 let mainWindow;
+const isDevelopment = process.env.NODE_ENV !== 'production'
 
 function createWindow () {
   mainWindow = new BrowserWindow({
@@ -12,25 +14,52 @@ function createWindow () {
     show: false,
     webPreferences: {
       nodeIntegration: true,
-      preload: 'server.js',
-      // webSecurity: false,
-      //devTools: false,
+      webSecurity: false,
+      devTools: isDevelopment,
+      nativeWindowOpen: true
     },
-    icon: path.join(__static, 'images/favicon.png'),
+    icon: path.join(__static, 'images/favicon@256x256.png'),
   })
-  
-  mainWindow.loadFile(path.join(__static, 'server/index.html'));
-  //mainWindow.setMenu(null)
+
+  if (isDevelopment) {
+    mainWindow.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`)
+    mainWindow.webContents.openDevTools()
+  } else {
+    mainWindow.loadURL(formatUrl({
+      pathname: path.join(__dirname, 'index.html'),
+      protocol: 'file',
+      slashes: true
+    }));
+    mainWindow.setMenu(null);
+  }
 
   mainWindow.once('ready-to-show', () => {
     startServer(mainWindow);
-    mainWindow.show()
+    mainWindow.show();
   })
-
-  // mainWindow.webContents.openDevTools()
-
+  
   mainWindow.on('closed', function () {
     mainWindow = null
+    closeServer();
+    process.exit(0);
+  })
+
+  mainWindow.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
+    if (frameName === 'Correction result') {
+      event.preventDefault()
+
+      Object.assign(options, {
+        modal: true,
+        parent: mainWindow,
+        height: 480,
+        width: 800,
+        title: frameName
+      })
+
+      event.newGuest = new BrowserWindow(options);
+      event.newGuest.setMenu(null);
+      event.newGuest.webContents.openDevTools();
+    }
   })
 }
 

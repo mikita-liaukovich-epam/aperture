@@ -1,0 +1,208 @@
+@font-face {
+    font-family: "Roboto";
+    src: url("../fonts/Roboto-Thin.ttf");
+    font-weight: 200;
+}
+@font-face {
+    font-family: "Roboto";
+    src: url("../fonts/Roboto-Light.ttf");
+    font-weight: 300;
+}
+@font-face {
+    font-family: "Roboto";
+    src: url("../fonts/Roboto-Regular.ttf");
+    font-weight: 400;
+}
+@font-face {
+    font-family: "Roboto";
+    src: url("../fonts/Roboto-Medium.ttf");
+    font-weight: 500;
+}
+
+$c-white: #fff;
+$c-grey: #c6c6c6;
+$c-dark-main: #222;
+$c-dark-secondary: #222;
+$c-accent: #02f46f;
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 200;
+    color: $c-white;
+}
+
+body {
+    background: $c-dark-main;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+}
+
+header {
+    width: 100%;
+    background: $c-dark-secondary;
+}
+
+.container {
+    min-width: 765px;
+    max-width: 1024px;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    padding: 5px 20px;
+    /* background: rgba(250, 140, 50, 0.5); */
+}
+
+.server-info-table {
+    table-layout: fixed;
+    width: 100%;
+    
+    .table-cell {
+        padding: 5px;
+    
+        .table-cell__title {
+            font-weight: 500;
+        }
+    }
+}
+
+footer {
+    background: $c-dark-secondary;
+    
+    .container {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.slider {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    
+    .slides-wrapper {
+        overflow: hidden;
+        position: relative;
+        height: 100%;
+        z-index: 1;
+        overflow: hidden;
+    }
+}
+
+.slides {
+    display: flex;
+    height: 100%;
+    position: relative;
+    width: 100%;
+    left: -100%;
+    
+    &.shifting {
+        transition: left .2s ease-out;
+    }
+    
+    .slide {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        transition: all 1s;
+        position: relative;
+        border-radius: 2px;
+    }
+}
+
+.control {
+    position: absolute;
+    user-select: none;
+    opacity: 0.3;
+    top: 50%;
+    width: 50px;
+    height: 50px;
+    background: $c-white;
+    border-radius: 50px;
+    margin-top: -20px;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+    background-size: 22px;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: 0.15s;
+
+    &:hover {
+        opacity: 1;
+        cursor: pointer;
+        transition: 0.1s;
+    }
+}
+  
+.prev,
+.next {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAMAAADDpiTIAAABSlBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJCQcHBwZGRkNDQ0MDAwMGBgWFhYSEhISEhIREREREREPDw8PFhYVFRUUFBQUFBQTExMTExMSEhISEhIREREREREQEBAQEBATExMTExMRERERERERFBQQFBQQExMTExMSEhIRFBQRExMQExMSEhISEhISEhIRExMRExMRExMSEhISEhISEhIRExMRExMSEhISEhISEhISEhISEhISEhISEhISEhIQExMRExMRERESEhISEhISEhISEhISEhISExMSExMSExMQExMQExMRExMRExMSExMSExMQExMQExMRERESEhISExMSExMQERESEhISExMSExMQExMQExMQEREQEREQEREQERERERESEhISExMSExMQExMQEREQEREQEREQERESExMSExMSExMSExMSExMSExPzJz9CAAAAbXRSTlMAAQIDBAUGBwkKExQVFxscHR4hIiQlJicoKSorLC0uNDVISUpLTU5jZmdpbG1vdXZ3fH1/gIaIiYqLlpeYmpyhoqOkpaanqKmqq6ytrsPEx8jMztHT2d3h4uPk5ebn6Onq6+zx8vP19vn6+/3+yCxc6AAABPZJREFUeNrt3ddWk1EUhVGVqNhBFHvvYi/YKwoo2BVFwd4Qz/vfOryyRRPuzFlzPsJe3yB/gMC8eQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/PcWrOhb1e0MmRq7Ljz+XEr5Ojl+cLlzpFlybKr8MHO130mi7H5WfjUzuMhVYsw/V/70YKXDhOi6UZp56mUgxKXS3AsFRNhfigKC9X4sCkg2XIoCgq2ZLQpINliKApJNFAVEPwKWooBke4sCoh0uCoh2oihAAArwEtDKlAJyHwIVkP02UAFVm1BAtjNFAdHWziog23BRQPZj4EcFZDtQFJDtsgKydY0rINvCuRWwzsUUgAJQAApAASgABaAAFECHFzCmAAUoQAEKUEB7phWgABSAAlAACkABKIAKNBSgAAUoQAEKaLeA9S6mABSAAlAACkABKIAKCritAAUoQAEKUIACFNBWARtcTAEoAAWgABSAAqiigFsKUIACFKAABShAAQpQQGsvFaAAFIACUAAKoJYCRhWgAAUoQAEKUIACFKAABSigZQEbXUwBKAAFoACqKWBEAQpQgAIUoAAFKEABClCAAhSggH97pQAFoAAUgAKoRpcCFKAABShAAQpQgAIUoAAFKEABrQrY5GIKQAFUVcCwAhSgAAUoQAEKUIACFKAABShAAQpQgAIUoAAF/M1rBdRXwE0FKEABClCAAhSgAAUoQAEKUIACFKAABShAAQr4awGbXay6Am4oQAEKUIACFKAABShAAQpQgAIUoAAFKEABClCAAoIKGPKTIQW0b2qVi2UXcL/hYtkFHHOw7ALeL3Ow7AJOuVd2Ac/mu1d2AdudK7uAo66VXcCQY2UXcNetKi3gensBPHaq7C8BAgh/CbjjVtkPgdcdK/tt4BHXit6/bHOu6P19Kzh7/3LSvaL3f7fUwZL39wgYvv89vxIWvf9Uj4tVtv+cPhjwdouLRe+/1cXsj/2xP/bH/tgf+2N/7I/96ZD95/Tn4t/Y3/7YH/tjf+yP/bE/9sf+2J9O2X/Y/va3v/3b2t/nP+yP/bE/9sf+2B/7Y386bf8R+9vf/vZv69/C2t/+2B/7Y3/sj/2xPx2oYX/729/+9re//e3/7/03u5j9sT/2x/7YH/vTofuP2t/+9re//e1vf/vb3/72t3/T/Te5mP2xP/bH/nT4/rfsb3/729/+9re//e1vf/vbv5lX9rc/9sf+2B/708n737a//e1vf/vb3/72t7/97W9/+9v/j/03upj9sT/2p4L9x+xvf/vb3/72t7/97W9/+9vf/vb/3Uv72x/7U4mF9re//e1vf/vb3/72t7/97W9/+9vf/va3/4/9N7iY/alo/3H729/+9re//e1vf/vb3/72t7/97W9/+9vf/vb/btr+lWnYP9sV+0cbsH+01Z/sH23U/tH6v9o/2ln7Z5uwf7Re+2fbY/9sh+yf7Xib+693quQA7F+tAftn223/bCvtH+6J/bOdtn+2vln7Z7tm/2w9H+yfbZ/9w120f7auoab7P7d/igWDTfZ/2OMwOXY+/W3+L2cXu0qS7iMvfpp/5to6J0nT2HH+0efv60+OHVjuHKEPAyv6erqdAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAlr4B1C02Tr7q6bkAAAAASUVORK5CYII=');
+}
+
+.prev {
+    transform: scaleX(-1);
+    left: 0;
+
+    &:active {
+        transform: scaleX(-1) scale(0.8);
+    }
+}
+
+.next {
+    right: 0;
+
+    &:active {
+        transform: scale(0.8);
+    }
+}
+
+.typeBox {
+    height: 20px;
+
+    & span {
+        vertical-align: top;
+    }
+}
+
+input[type="checkbox"] {
+    width: 40px;
+    height: 20px;
+    
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    background: $c-grey;
+    outline: none;
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+    transition: 0.25s;
+    position: relative;
+
+    &:checked {
+        background: $c-accent;
+
+        &::before {
+            left: 20px;
+        }
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        top: 0;
+        left: 0;
+        background: $c-white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        transition: 0.25s;
+    }
+}

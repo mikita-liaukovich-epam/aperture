@@ -3,20 +3,25 @@
 process.title = 'Aperture server';
 
 const webSocketsServerPort = 1337;
-const webSocketServer = require('websocket').server;
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
-const { getIPv4Address } = require('common/utils.js');
+import { server as webSocketServer } from 'websocket';
+import { createServer } from 'https';
+import { readFileSync, readFile } from 'fs';
+import { join } from 'path';
+import { getIPv4Address } from 'common/utils.js';
 
-let httpServer;
+let httpsServer;
+
+const serverOptions = {
+  key: readFileSync(join(__static, 'server/key.pem')),
+  cert: readFileSync(join(__static, 'server/cert.pem'))
+};
 
 function startServer(mainWindow) {
-  httpServer = http.createServer(function (request, response) {
+  httpsServer = createServer(serverOptions, function (request, response) {
     const url = (request.url === '/') ? 'client/index.html' : request.url;
-    const finalPath = path.join(__static, url)
+    const finalPath = join(__static, url)
     
-    fs.readFile(finalPath, (err, data) => {
+    readFile(finalPath, (err, data) => {
       if (!err) {
         const dotOffset = request.url.lastIndexOf('.');
         const mimeType = dotOffset == -1
@@ -42,16 +47,16 @@ function startServer(mainWindow) {
   });
 
   const hostAddress = getIPv4Address();
-  httpServer.listen(webSocketsServerPort, hostAddress, function (err) {
+  httpsServer.listen(webSocketsServerPort, hostAddress, function (err) {
     console.log(`[${new Date()}] Server is listening on ${hostAddress}:${webSocketsServerPort}`);
     mainWindow.webContents.send('store-data', {
       set: 'server',
-      address: hostAddress,
+      address: 'https://' + hostAddress,
       port: webSocketsServerPort,
     })
   });
 
-  const wsServer = new webSocketServer({ httpServer });
+  const wsServer = new webSocketServer({ httpServer: httpsServer });
 
   wsServer.on('request', function (request) {
     let connection;
@@ -85,6 +90,14 @@ function startServer(mainWindow) {
   });
 }
 
-module.exports = {
+function closeServer() {
+  if (httpsServer) {
+    httpsServer.close();
+    console.log('Server was successfully closed')
+  }
+} 
+
+export {
   startServer,
+  closeServer,
 }
